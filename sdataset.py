@@ -27,10 +27,10 @@ class bilingualDataset(Dataset):
         past_prices = self.ds[start_idx:end_idx]
     # Target sequence (next prices)
         future_prices = self.ds[end_idx:future_end_idx]
-        print("past_prices", past_prices)
+       # print("past_prices", past_prices)
         future_prices = [str(i) for i in future_prices]#convert to ste
         past_prices = [str(i) for i in past_prices]
-        print("future_prices", future_prices)
+        #print("future_prices", future_prices)
         future_prices_str = " ".join(future_prices)#convert to 1 strwith space
         past_prices_str = " ".join(past_prices)
         
@@ -38,13 +38,13 @@ class bilingualDataset(Dataset):
     # Convert to strings
        
 
-        print("OOOOOOOOOOOOOOOOOO")
+       # print("OOOOOOOOOOOOOOOOOO")
         enc_input_token = self.tokenizer_src.encode(past_prices_str).ids
-        print("enc_input_token", enc_input_token)
+       # print("enc_input_token", enc_input_token)
         dec_input_token = self.tokenizer_tgt.encode(future_prices_str).ids
         label = self.tokenizer_tgt.encode(future_prices_str).ids
-        print("dec_input_token", dec_input_token)
-        print("eeeeeeeeeeeeeeeeeeeeee")
+       # print("dec_input_token", dec_input_token)
+       # print("eeeeeeeeeeeeeeeeeeeeee")
         enc_num_padding_tokens = self.seq_len - len(enc_input_token) - 2
         dec_num_padding_tokens = self.seq_len - len(dec_input_token) - 1
         if enc_num_padding_tokens < 0 or dec_num_padding_tokens < 0:
@@ -84,13 +84,13 @@ class bilingualDataset(Dataset):
         encoder_input = torch.tensor(encoder_input, dtype=torch.int64)
         decoder_input = torch.tensor(decoder_input, dtype=torch.int64)
         label = torch.tensor(label, dtype=torch.int64)
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@22")
-        print("encoder_input", encoder_input)
-        print("decoder_input", decoder_input)
-        print("label", label)   
-        print("encoder_mask", (encoder_input != self.tokenizer_src.token_to_id('[PAD]')).unsqueeze(0).unsqueeze(0).int())
-        print("decoder_mask", (decoder_input != self.tokenizer_tgt.token_to_id('[PAD]')).unsqueeze(0).unsqueeze(0).int() & causal_mask(decoder_input.size(0)))
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        #print("@@@@@@@@@@@@@@@@@@@@@@@@@@@22")
+        #print("encoder_input", encoder_input)
+        #print("decoder_input", decoder_input)
+        #print("label", label)   
+        #print("encoder_mask", (encoder_input != self.tokenizer_src.token_to_id('[PAD]')).unsqueeze(0).unsqueeze(0).int())
+        #print("decoder_mask", (decoder_input != self.tokenizer_tgt.token_to_id('[PAD]')).unsqueeze(0).unsqueeze(0).int() & causal_mask(decoder_input.size(0)))
+       # print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         return {
             'encoder_input': encoder_input,
             'decoder_input': decoder_input,
