@@ -4,7 +4,7 @@ import os
 def get_config():
     return {
         "batch_size": 8,
-        "num_epochs": 1,
+        "num_epochs": 30,
         "lr": 10**-4,
         "seq_len": 350,
         "d_model": 512,
