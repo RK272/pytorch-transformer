@@ -14,6 +14,8 @@ from dataset import bilingualDataset,causal_mask
 from config import get_weights_file_path, get_config
 from model import build_transformer
 from torch.utils.tensorboard import SummaryWriter
+import random
+from torch.utils.data import random_split, Subset
 
 def greedy_decode(model, source, source_mask, tokenizer_src, tokenizer_tgt, max_len, device):
     sos_idx=tokenizer_tgt.token_to_id('[SOS]')
@@ -90,6 +92,10 @@ def get_ds(config):
     print(ds_raw)
     tokenizer_src = get_or_build_tokenizer(config, ds_raw, config['lang_src'])
     tokenizer_tgt = get_or_build_tokenizer(config, ds_raw, config['lang_tgt'])
+    total_samples=len(ds_raw)
+    subset_indices = random.sample(range(total_samples), 6)
+    subset_ds = Subset(ds_raw, subset_indices)
+    ds_raw=subset_ds
     train_ds_size = int(0.9 * len(ds_raw))
     val_ds_size = len(ds_raw) - train_ds_size
     train_ds_raw, val_ds_raw = random_split(ds_raw, [train_ds_size, val_ds_size])
